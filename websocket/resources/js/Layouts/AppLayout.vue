@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import Vue from "vue";
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
@@ -51,6 +52,11 @@ const logout = () => {
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+
+                                <!-- v-on:click="removeNotification('notification')" -->
+                                <NavLink :href="route('notifications')" :active="route().current('notifications')">
+                                    Notifications <span id="notification2" style="display: none;" class="inline-flex w-3 h-3 text-xs ml-2 font-bold text-white bg-red-500 rounded-full"></span>
                                 </NavLink>
                             </div>
                         </div>
@@ -136,13 +142,11 @@ const logout = () => {
                                         <span v-else class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
                                                 {{ $page.props.user.name }}
-
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
+                                                    fill="currentColor">
                                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                                 </svg>
                                             </button>
@@ -158,6 +162,10 @@ const logout = () => {
                                         <DropdownLink :href="route('profile.show')">
                                             Profile
                                         </DropdownLink>
+
+                                        <!-- <DropdownLink :href="route('notifications')" v-on:click="removeNotification('notification2')">
+                                            Notifications <span id="notification2" style="display: none;" class="inline-flex w-3 h-3 text-xs font-bold text-white bg-red-500 rounded-full"></span>
+                                        </DropdownLink> -->
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
                                             API Tokens
@@ -309,3 +317,22 @@ const logout = () => {
         </div>
     </div>
 </template>
+
+<script>
+
+export default {
+    data(){
+        return{
+            notifik: [],
+            abcd: "abcd"
+        }
+    },
+
+    mounted() {
+        Echo.channel(`firstSocket`).listen('.FirstBroadCastName', (data) => {
+            console.log(data);
+            document.getElementById('notification2').style.display = '';
+        })
+    },
+}
+</script>

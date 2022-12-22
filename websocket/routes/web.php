@@ -33,6 +33,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    Route::get('/notifications', function(){
+        return Inertia::render('Notifications');
+    })->name('notifications');
 });
 
 Route::get('/socket', function(){
